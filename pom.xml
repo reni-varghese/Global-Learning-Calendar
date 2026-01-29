@@ -19,7 +19,7 @@
     
     <properties>
         <!-- Use Java 11 for compatibility with Lombok and Spring Boot 4.x -->
-        <java.version>11</java.version>
+        <java.version>17</java.version>
     </properties>
 
     <dependencies>
