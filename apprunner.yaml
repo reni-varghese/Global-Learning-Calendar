@@ -1,0 +1,42 @@
+version: 1.0
+runtime: java17
+build:
+  commands:
+    pre-build:
+      - echo "Starting Maven build..."
+    build:
+      - echo "Building Spring Boot application with Maven..."
+      - mvn clean package -DskipTests
+    post-build:
+      - echo "Build completed successfully"
+      - echo "JAR file location:"
+      - ls -la target/*.jar
+
+run:
+  runtime-version: 17
+  command: java $JAVA_OPTS -jar target/global-learning-calendar-1.0.0.jar
+  network:
+    port: 8080
+    env: SERVER_PORT
+  env:
+    - name: SERVER_PORT
+      value: "8080"
+    - name: SPRING_PROFILES_ACTIVE
+      value: "prod"
+    - name: DB_URL
+      value: "jdbc:mysql://firstglobal.c83u4y8iugyk.us-east-1.rds.amazonaws.com:3306/learning_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true"
+    - name: DB_USERNAME
+      value: "admin"
+    - name: DB_PASSWORD
+      value: "cognizant123"
+    - name: JAVA_OPTS
+      value: "-Xms512m -Xmx1024m -XX:+UseG1GC"
+
+# Health check configuration
+health-check:
+  protocol: http
+  path: /actuator/health
+  interval: 10
+  timeout: 5
+  healthy-threshold: 1
+  unhealthy-threshold: 5
